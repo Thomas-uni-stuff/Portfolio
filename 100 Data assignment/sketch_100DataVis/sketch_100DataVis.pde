@@ -1,12 +1,12 @@
-String artists[];
-String songs[];
+Bar bar;
 
 void setup() {
-  size(1000, 1000);
-  artists = loadStrings("Artists.txt");
-  songs = loadStrings("Songs.txt");
+  size(1500, 900);
+  background(255);
+  bar = new Bar();
 }
 
 
-void draw() {
+void draw(){
+  bar.draw();
 }
