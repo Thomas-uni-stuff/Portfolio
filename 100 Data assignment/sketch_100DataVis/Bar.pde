@@ -1,13 +1,17 @@
-class Bar {
+class Bar { //<>// //<>// //<>//
   String artists[];    //Array holds artist names
   String aStreams[];    //Array holds artist streams for each day
   String tStreams[];    //Array holds total number of streams for each dayartistID[]
   String artistIDs[];
   int artistLen;
+  int boxLen;
   int posX;
+  int rectPosX;
   int date;
   ArrayList<Integer> uniqueArtists = new ArrayList<Integer>();    //Creates arrayList that stores each unique artistID
   float artistColour;
+  boolean drawBox;
+
 
 
   Bar() {
@@ -15,6 +19,8 @@ class Bar {
     posX = 10;
     date = 1;
     artistLen = 0;
+    rectPosX = 10;
+
     artists = loadStrings("TopArtistNames.txt");
     aStreams = loadStrings("TopArtistStreams.txt");
     tStreams = loadStrings("TotalStreams.txt");
@@ -31,9 +37,29 @@ class Bar {
   }
 
   void barColour(float floatVal) {    //Method fills in each artist block with a colour depending on their position in the uniqueArtist arrayList
-    float listSize = (360/uniqueArtists.size());
-    floatVal = (floatVal * listSize);
+    floatVal = (floatVal * 137.5)%360;
     fill(floatVal, 100, 100);
+  }
+
+
+  void artistDisplay() {
+    drawBox = false;    //check wether to draw box displaying artists names
+    for (int i=0; i<tStreams.length; i++) {
+      boxLen = int(tStreams[i])*8;
+      int tempArrayNum[] = int(split(aStreams[i], '/'));
+      for (int u=0; u<tempArrayNum.length; u++) {
+        if (mouseX >= rectPosX && mouseX <= rectPosX+35 && mouseY <= height && mouseY >= height-boxLen) {
+          drawBox = true;
+        }
+        boxLen = boxLen - tempArrayNum[u]*8;
+      }
+      rectPosX = rectPosX + 45;
+    }
+    rectPosX = 10;
+    if (drawBox == true) {    //if statment only produces a rectangle if the mouse is within the correct areas of the screen, dictated by drawBox being true
+      fill(360, 200);
+      rect(mouseX, mouseY, 150, 100);
+    }
   }
 
 
@@ -59,11 +85,16 @@ class Bar {
         rect(posX, (height - artistLen), 35, tempArrayNum[u]*8);
         artistLen = artistLen - tempArrayNum[u]*8;
       }
-
       posX = posX + 45;    //Updates the position of each new bar
       date = date + 1;    //Adds 1 to the date counter
     }
     posX = 10;    //reinitialises posX so that only the bars in desired range are drawn
     date = 1;    //reinitialises date so that only the date until the desired point is added to the canvas
+  }
+
+
+  void draw() {
+    createBar();
+    artistDisplay();
   }
 }

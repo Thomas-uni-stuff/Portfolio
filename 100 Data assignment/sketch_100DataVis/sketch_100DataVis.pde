@@ -11,5 +11,5 @@ void setup() {
 
 
 void draw(){
-  bar.createBar();
+  bar.draw();
 }
