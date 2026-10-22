@@ -1,4 +1,4 @@
-class Bar { //<>// //<>// //<>//
+class Bar { //<>//
   String artists[];    //Array holds artist names
   String aStreams[];    //Array holds artist streams for each day
   String tStreams[];    //Array holds total number of streams for each dayartistID[]
@@ -20,7 +20,6 @@ class Bar { //<>// //<>// //<>//
     date = 1;
     artistLen = 0;
     rectPosX = 10;
-
     artists = loadStrings("TopArtistNames.txt");
     aStreams = loadStrings("TopArtistStreams.txt");
     tStreams = loadStrings("TotalStreams.txt");
@@ -42,7 +41,7 @@ class Bar { //<>// //<>// //<>//
   }
 
 
-  void artistDisplay() {
+  void artistDisplay() {    //method that draw the box that display the artist names that appear in each bar
     drawBox = false;    //check wether to draw box displaying artists names
     for (int i=0; i<tStreams.length; i++) {
       boxLen = int(tStreams[i])*8;
@@ -61,7 +60,6 @@ class Bar { //<>// //<>// //<>//
       rect(mouseX, mouseY, 150, 100);
     }
   }
-
 
 
   void createBar() {
