@@ -50,7 +50,7 @@ class Bar { //<>//
     fill(floatVal, 100, 100);
   }
 
-  void boxDisplay() {    //method that draw the box that display the artist names that appear in each bar
+  void artistDisplay() {    //method that draws box which displays the artist names that appear in each bar
     drawBox = false;    //check wether to draw box displaying artists names
     for (int i=0; i<tStreams.length; i++) {
       boxLen = int(tStreams[i])*8;
@@ -63,8 +63,8 @@ class Bar { //<>//
       if (mouseX <= 45) {
         counter = 0;
       }
-      counter = mouseX/45;
-      listPos = counter * 5;
+      counter = int(mouseX/45.01);    //dividing by 45.01 so that the last pixel of the bar doesn't cause listPos to update to next position
+      listPos = counter * 5;    //uses counter to assign the position in artistNames that needs to got and displayed depending on the mouse position
       rectPosX = rectPosX + 45;
       if(mouseX > artistNames.size() * 45){
         counter = 0;
@@ -113,6 +113,6 @@ class Bar { //<>//
 
   void draw() {
     createBar();
-    boxDisplay();
+    artistDisplay();
   }
 }
