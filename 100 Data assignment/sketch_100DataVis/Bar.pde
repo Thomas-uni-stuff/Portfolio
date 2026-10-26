@@ -8,10 +8,12 @@ class Bar { //<>//
   int posX;
   int rectPosX;
   int date;
+  int counter;
+  int listPos;
   ArrayList<Integer> uniqueArtists = new ArrayList<Integer>();    //Creates arrayList that stores each unique artistID
+  ArrayList<String> artistNames = new ArrayList<String>();
   float artistColour;
   boolean drawBox;
-
 
 
   Bar() {
@@ -20,6 +22,7 @@ class Bar { //<>//
     date = 1;
     artistLen = 0;
     rectPosX = 10;
+    counter = 0;
     artists = loadStrings("TopArtistNames.txt");
     aStreams = loadStrings("TopArtistStreams.txt");
     tStreams = loadStrings("TotalStreams.txt");
@@ -33,6 +36,13 @@ class Bar { //<>//
         }
       }
     }
+    for (int u=0; u<artists.length; u++) {
+      String tempNames[] = split(artists[u], '/');
+      for (int n=0; n<tempNames.length; n++) {
+        artistNames.add(tempNames[n]);
+      }
+    }
+    printArray(artistNames);
   }
 
   void barColour(float floatVal) {    //Method fills in each artist block with a colour depending on their position in the uniqueArtist arrayList
@@ -40,8 +50,7 @@ class Bar { //<>//
     fill(floatVal, 100, 100);
   }
 
-
-  void artistDisplay() {    //method that draw the box that display the artist names that appear in each bar
+  void boxDisplay() {    //method that draw the box that display the artist names that appear in each bar
     drawBox = false;    //check wether to draw box displaying artists names
     for (int i=0; i<tStreams.length; i++) {
       boxLen = int(tStreams[i])*8;
@@ -50,17 +59,29 @@ class Bar { //<>//
         if (mouseX >= rectPosX && mouseX <= rectPosX+35 && mouseY <= height && mouseY >= height-boxLen) {
           drawBox = true;
         }
-        boxLen = boxLen - tempArrayNum[u]*8;
       }
+      if (mouseX <= 45) {
+        counter = 0;
+      }
+      counter = mouseX/45;
+      listPos = counter * 5;
       rectPosX = rectPosX + 45;
+      if(mouseX > artistNames.size() * 45){
+        counter = 0;
+      }
     }
     rectPosX = 10;
     if (drawBox == true) {    //if statment only produces a rectangle if the mouse is within the correct areas of the screen, dictated by drawBox being true
       fill(360, 200);
-      rect(mouseX, mouseY, 150, 100);
+      rect(mouseX, mouseY, 150, 120);
+      fill(0);
+      text(artistNames.get(listPos), mouseX + 10, mouseY + 20);
+      text(artistNames.get(listPos+1), mouseX + 10, mouseY + 40);
+      text(artistNames.get(listPos+2), mouseX + 10, mouseY + 60);
+      text(artistNames.get(listPos+3), mouseX + 10, mouseY + 80);
+      text(artistNames.get(listPos+4), mouseX + 10, mouseY + 100);
     }
   }
-
 
   void createBar() {
     background(360);
@@ -90,9 +111,8 @@ class Bar { //<>//
     date = 1;    //reinitialises date so that only the date until the desired point is added to the canvas
   }
 
-
   void draw() {
     createBar();
-    artistDisplay();
+    boxDisplay();
   }
 }
