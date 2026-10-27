@@ -42,7 +42,6 @@ class Bar { //<>//
         artistNames.add(tempNames[n]);
       }
     }
-    printArray(artistNames);
   }
 
   void barColour(float floatVal) {    //Method fills in each artist block with a colour depending on their position in the uniqueArtist arrayList
@@ -84,15 +83,15 @@ class Bar { //<>//
   }
 
   void createBar() {
-    background(360);
+    background(245);
     for (int i=0; i<tStreams.length; i++) {    //Loop to create the number of bars respective to the number of data items in the tStreams txt file
       fill(65);
       stroke(65);
       rect(posX, height - int(tStreams[i])*8, 35, int(tStreams[i])*8);    //Creates the bar in incrementing positions
       fill(0);
       stroke(0);
-      text(date +"/10", posX, 10);
-      line(posX-10, 0, posX-10, 20);
+      text(date +"/10", posX+10, 10);
+      line(posX, 0, posX, 20);
       artistLen = int(tStreams[i])*8;
       int tempArrayNum[] = int(split(aStreams[i], '/'));
       for (int u=0; u<tempArrayNum.length; u++) {    //Overlays the artists bar on top of the bar for total streams, visualising the amount each artist was streamed
@@ -112,6 +111,7 @@ class Bar { //<>//
   }
 
   void draw() {
+    textFont(times);
     createBar();
     artistDisplay();
   }
