@@ -2,7 +2,7 @@ class Bar { //<>//
   String artists[];    //Array holds artist names
   String aStreams[];    //Array holds artist streams for each day
   String tStreams[];    //Array holds total number of streams for each dayartistID[]
-  String artistIDs[];
+  String artistIDs[];  //Array holds the artist ID's, this array is used in createBar with the method barColour to determine the bar colour for each individual artist
   int artistLen;
   int boxLen;
   int posX;
@@ -11,7 +11,7 @@ class Bar { //<>//
   int counter;
   int listPos;
   ArrayList<Integer> uniqueArtists = new ArrayList<Integer>();    //Creates arrayList that stores each unique artistID
-  ArrayList<String> artistNames = new ArrayList<String>();
+  ArrayList<String> artistNames = new ArrayList<String>();    //Creates arrayList that stores the name of every single artist for each day
   float artistColour;
   boolean drawBox;
 
@@ -39,7 +39,7 @@ class Bar { //<>//
     for (int u=0; u<artists.length; u++) {
       String tempNames[] = split(artists[u], '/');
       for (int n=0; n<tempNames.length; n++) {
-        artistNames.add(tempNames[n]);
+        artistNames.add(tempNames[n]);    //adds every single artist name into an arrayList, this is later used in the artistDisplay function
       }
     }
   }
@@ -50,23 +50,23 @@ class Bar { //<>//
   }
 
   void artistDisplay() {    //method that draws box which displays the artist names that appear in each bar
-    drawBox = false;    //check wether to draw box displaying artists names
+    drawBox = false;    //Initialises drawBox to false
     for (int i=0; i<tStreams.length; i++) {
       boxLen = int(tStreams[i])*8;
       int tempArrayNum[] = int(split(aStreams[i], '/'));
       for (int u=0; u<tempArrayNum.length; u++) {
         if (mouseX >= rectPosX && mouseX <= rectPosX+35 && mouseY <= height && mouseY >= height-boxLen) {
-          drawBox = true;
+          drawBox = true;    //drawBox is flipped to true to signal when mouse position is over a bar
         }
       }
       if (mouseX <= 45) {
         counter = 0;
       }
       counter = int(mouseX/45.01);    //dividing by 45.01 so that the last pixel of the bar doesn't cause listPos to update to next position
-      listPos = counter * 5;    //uses counter to assign the position in artistNames that needs to got and displayed depending on the mouse position
+      listPos = counter * 5;    //uses counter to assign the position in artistNames that needs to be fetched and displayed depending on the mouse position
       rectPosX = rectPosX + 45;
       if(mouseX > artistNames.size() * 45){
-        counter = 0;
+        counter = 0;    //prevents the program from crashing if mouse position exceeds last bar that is displayed, prevents overflow in artistNames
       }
     }
     rectPosX = 10;
@@ -111,7 +111,7 @@ class Bar { //<>//
   }
 
   void draw() {
-    textFont(times);
+    textFont(times);    //sets the font to times new roman, the defaul font used in this program
     createBar();
     artistDisplay();
   }
