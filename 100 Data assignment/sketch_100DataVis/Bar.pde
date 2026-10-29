@@ -1,4 +1,11 @@
-class Bar { //<>//
+/* //<>//
+ This class acts as the start-up screen for the program
+ It displays a very simple, statistical view of the data (a bit similar to an excel diagram)
+ The main purpose for this class is simply to have a neat start page, where the data is displayed in a simple, easily digestible form
+ */
+
+class Bar {
+  PFont times;
   String artists[];    //Array holds artist names
   String aStreams[];    //Array holds artist streams for each day
   String tStreams[];    //Array holds total number of streams for each dayartistID[]
@@ -10,6 +17,7 @@ class Bar { //<>//
   int date;
   int counter;
   int listPos;
+  int lineX;
   ArrayList<Integer> uniqueArtists = new ArrayList<Integer>();    //Creates arrayList that stores each unique artistID
   ArrayList<String> artistNames = new ArrayList<String>();    //Creates arrayList that stores the name of every single artist for each day
   float artistColour;
@@ -18,7 +26,9 @@ class Bar { //<>//
 
   Bar() {
     colorMode(HSB, 360, 100, 100);    //setting the colour mode to HSB to make it easier to customise the colour of each artist bar
+    times = createFont("times.ttf", 12);
     posX = 10;
+    lineX = 45;
     date = 1;
     artistLen = 0;
     rectPosX = 10;
@@ -65,7 +75,7 @@ class Bar { //<>//
       counter = int(mouseX/45.01);    //dividing by 45.01 so that the last pixel of the bar doesn't cause listPos to update to next position
       listPos = counter * 5;    //uses counter to assign the position in artistNames that needs to be fetched and displayed depending on the mouse position
       rectPosX = rectPosX + 45;
-      if(mouseX > artistNames.size() * 45){
+      if (mouseX > artistNames.size() * 45) {
         counter = 0;    //prevents the program from crashing if mouse position exceeds last bar that is displayed, prevents overflow in artistNames
       }
     }
@@ -90,8 +100,10 @@ class Bar { //<>//
       rect(posX, height - int(tStreams[i])*8, 35, int(tStreams[i])*8);    //Creates the bar in incrementing positions
       fill(0);
       stroke(0);
-      text(date +"/10", posX+10, 10);
-      line(posX, 0, posX, 20);
+      textAlign(CENTER);    //Centers the date text
+      text(date +"/10", lineX - 20, 10);
+      line(lineX, 0, lineX, 20);
+      textAlign(LEFT);    //realigns text so its displayed properly in box in artistDisplay
       artistLen = int(tStreams[i])*8;
       int tempArrayNum[] = int(split(aStreams[i], '/'));
       for (int u=0; u<tempArrayNum.length; u++) {    //Overlays the artists bar on top of the bar for total streams, visualising the amount each artist was streamed
@@ -105,9 +117,11 @@ class Bar { //<>//
       }
       posX = posX + 45;    //Updates the position of each new bar
       date = date + 1;    //Adds 1 to the date counter
+      lineX = lineX + 45;
     }
     posX = 10;    //reinitialises posX so that only the bars in desired range are drawn
     date = 1;    //reinitialises date so that only the date until the desired point is added to the canvas
+    lineX = 45;
   }
 
   void draw() {

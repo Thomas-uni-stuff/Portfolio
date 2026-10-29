@@ -1,8 +1,11 @@
-/*minimum screen size 17inches, 20+ inches recommended
- if minimum requirement is not met, program will not entirely fit on screen*/
+/*  
+    Minimum screen size 17inches, 20+ inches recommended
+    If minimum requirement is not met, program will not entirely fit on screen
+*/
+
 Bar bar;
 UserManual userManual;
-PFont times;
+EachArtist eachArtist;;
 boolean manualDisplayed;
 int textColour;
 int textAddition;    //determines whether textColour gets added or subtracted
@@ -11,7 +14,7 @@ void setup() {
   size(1500, 1000);
   bar = new Bar();
   userManual = new UserManual();
-  times = createFont("times.ttf", 12);
+  eachArtist = new EachArtist();
   manualDisplayed = false;
   textColour = 5;
   textAddition = 2;
@@ -38,4 +41,7 @@ void draw() {
     }
   }
   textAlign(LEFT);    //realligns all text to the left, so text is displayed properly when bar class is called
+  if (key == '1'){
+    eachArtist.draw();
+  }
 }
