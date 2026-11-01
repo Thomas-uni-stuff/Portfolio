@@ -2,7 +2,7 @@
  This class acts as the start-up screen for the program
  It displays a very simple, statistical view of the data (a bit similar to an excel diagram)
  The main purpose for this class is simply to have a neat start page, where the data is displayed in a simple, easily digestible form
- */
+*/
 
 class Bar {
   PFont times;
@@ -75,9 +75,9 @@ class Bar {
       counter = int(mouseX/45.01);    //dividing by 45.01 so that the last pixel of the bar doesn't cause listPos to update to next position
       listPos = counter * 5;    //uses counter to assign the position in artistNames that needs to be fetched and displayed depending on the mouse position
       rectPosX = rectPosX + 45;
-      if (mouseX > artistNames.size() * 45) {
-        counter = 0;    //prevents the program from crashing if mouse position exceeds last bar that is displayed, prevents overflow in artistNames
-      }
+      //if (mouseX > artistNames.size() * 45) {
+      //  counter = 0;    //prevents the program from crashing if mouse position exceeds last bar that is displayed, prevents overflow in artistNames
+      //}
     }
     rectPosX = 10;
     if (drawBox == true) {    //if statment only produces a rectangle if the mouse is within the correct areas of the screen, dictated by drawBox being true

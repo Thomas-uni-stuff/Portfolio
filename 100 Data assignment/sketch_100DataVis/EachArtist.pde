@@ -11,13 +11,13 @@ class EachArtist {
   int ballVel;
   int ballSize;
   PFont times;
-  boolean colourBox;
-
+  boolean colourFlags[];
+  int test;
 
   EachArtist() {
+    test = 0;
     artists = loadStrings("TopArtistNames.txt");
     times = createFont("times.ttf", 12);
-    colourBox = false;
     for (int i=0; i<artists.length; i++) {
       String tempArray[] = split(artists[i], '/');
       for (int u=0; u<tempArray.length; u++) {
@@ -27,20 +27,21 @@ class EachArtist {
         }
       }
     }
+    colourFlags = new boolean[uniqueArtists.size()];    //initialises colourFlags with all false values
   }
+
   void createBox() {
     float xPos = 0;
     int yPos = 0;
-    colourBox = false;
     for (int i=0; i<uniqueArtists.size(); i++) {
-      if (xPos > width) {
+      if (xPos > width-1) {    //width - 1 ensures that the last box on the x axis correctly overflows and gets put on the next line
         yPos = yPos + 40;
         xPos = 0;
       }
-      if (mouseX >= xPos && mouseX <= xPos + 100 && mouseY >= yPos && mouseY <= yPos + 40 && mousePressed == true) {
-        colourBox = true;
+      if (mouseX >= xPos && mouseX <= xPos + 125 && mouseY >= yPos && mouseY <= yPos + 40) {
+        colourFlags[i] = !colourFlags[i];
       }
-      if (colourBox == true) {
+      if (colourFlags[i] == true) {
         fill(225);
       } else {
         fill(360);
@@ -54,8 +55,12 @@ class EachArtist {
     }
   }
 
+  void mouseClicked() {
+    test = 1;
+  }
+
   void draw() {
     background(245);
-    createBox();
+    println(test);
   }
 }
