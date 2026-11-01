@@ -5,7 +5,7 @@
 
 Bar bar;
 UserManual userManual;
-EachArtist eachArtist;;
+EachArtist eachArtist;
 boolean manualDisplayed;
 int textColour;
 int textAddition;    //determines whether textColour gets added or subtracted
@@ -18,6 +18,10 @@ void setup() {
   manualDisplayed = false;
   textColour = 5;
   textAddition = 2;
+}
+
+void mouseClicked(){
+  eachArtist.handleClick();    //Connects the main program with eachArtist, so that the mouse click can be registered inside the eachArtist class
 }
 
 
