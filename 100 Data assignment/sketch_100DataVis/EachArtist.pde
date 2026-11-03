@@ -7,28 +7,65 @@
 class EachArtist {
   String artists[];
   ArrayList<String> uniqueArtists = new ArrayList<String>();
+  ArrayList<Integer> topArtistStreams = new ArrayList<Integer>();
+  ArrayList<String> artistNames = new ArrayList<String>();
+  ArrayList<Integer> eachArtistStreams = new ArrayList<Integer>();
   ArrayList<Integer> artistApps = new ArrayList<Integer>();
-  int ballVel;
+  float ballCordsX[];
+  float ballCordsY[];
+  float vxs[];
+  float vys[];
   int ballSize;
   int counter;
+  String artistStreams[];
   PFont times;
   boolean colourFlags[];
+  float radius;
 
   EachArtist() {
     counter = 0;
+    radius = 2;
     artists = loadStrings("TopArtistNames.txt");
+    artistStreams = loadStrings("TopArtistStreams.txt");
     times = createFont("times.ttf", 14);
     for (int i=0; i<artists.length; i++) {
       String tempArray[] = split(artists[i], '/');
+      int tempArrayNum[] = int(split(artistStreams[i], '/'));
       for (int u=0; u<tempArray.length; u++) {
+        topArtistStreams.add(tempArrayNum[u]);
+        artistNames.add(tempArray[u]);
         if (uniqueArtists.contains(tempArray[u])) {
         } else {
           uniqueArtists.add(tempArray[u]);
         }
       }
     }
+    vxs = new float[uniqueArtists.size()];
+    vys = new float[uniqueArtists.size()];
+    ballCordsX = new float[uniqueArtists.size()];
+    ballCordsY = new float[uniqueArtists.size()];
+    for (int n=0; n<uniqueArtists.size(); n++) {
+      int appearanceCounter = 0;
+      int streamsCounter = 0;    //Re-initialises streamsCounter to 0 every time n is incremented
+      ballCordsX[n] = random(400, 1100);
+      ballCordsY[n] = random(550, 650);
+      for (int a=0; a<artistNames.size(); a++) {
+        if (uniqueArtists.get(n).equals(artistNames.get(a))) {    //compares uniqueArtists pos n with artistNames pos a
+          streamsCounter = streamsCounter + topArtistStreams.get(a);  //if uniqueArtists(n) and artistNames(a) are equal, streamsCounter is incremented by the value in topArtistStreams(a)
+          appearanceCounter = appearanceCounter + 1;
+        }
+      }
+      eachArtistStreams.add(streamsCounter);    //streamsCounter is added to the eachArtistStreams arrayList, so that it creates a parallel arrayList to uniqueArtists
+      artistApps.add(appearanceCounter);
+    }
+    for (int b=0; b<uniqueArtists.size(); b++) {
+      vxs[b] = artistApps.get(b);
+      vys[b] = artistApps.get(b);
+    }
     colourFlags = new boolean[uniqueArtists.size()];    //initialises colourFlags with all false values
   }
+
+
 
   void handleClick() {    //Method checks where mouse is and is connected to mouseClicked method in main class, so that it runs every time mouse is pressed
     float xPos = 0;
@@ -42,7 +79,7 @@ class EachArtist {
       if (mouseX >= xPos && mouseX <= xPos + 150 && mouseY >= yPos && mouseY <= yPos + 40) {
         colourFlags[i] = !colourFlags[i];
       }
-      if(colourFlags[i] == true){
+      if (colourFlags[i] == true) {
         counter = counter + 1;    //counts the number of artists boxes currently active in the program
       }
       xPos = xPos + 150;
@@ -72,11 +109,46 @@ class EachArtist {
     rect(xPos, yPos, 150, 40);    //creates seperate box that serves the purpose of the 'counter box', here the number of artist boxes currently active is displayed
     fill(360);
     textAlign(RIGHT, CENTER);
-    text("Counter :   " + counter, xPos+75, yPos+20);
+    text("Counter : " + counter, xPos+75, yPos+20);
+  }
+
+  void createBall() {
+    float ballColour = 0;
+    for (int i=0; i<uniqueArtists.size(); i++) {
+      ballColour = (i * 137.5) % 360;
+      if (colourFlags[i] == true) {
+        radius = radius * eachArtistStreams.get(i);
+        fill(ballColour, 100, 100);
+        circle(ballCordsX[i], ballCordsY[i], radius);
+      }
+      radius = 2;
+      ballColour = 0;
+    }
+  }
+
+  void collisionCheck() {
+    for (int i=0; i<uniqueArtists.size(); i++) {
+      if (ballCordsX[i] + (radius * eachArtistStreams.get(i))/2 > width || ballCordsX[i] - (radius * eachArtistStreams.get(i))/2 < 0) {
+        vxs[i] = -vxs[i];
+      }
+      if (ballCordsY[i] + (radius * eachArtistStreams.get(i))/2 > height || ballCordsY[i] - (radius * eachArtistStreams.get(i))/2 < 160) {
+        vys[i] = -vys[i];
+      }
+    }
+  }
+
+  void moveBall() {
+    for (int i=0; i<uniqueArtists.size(); i++) {
+      ballCordsX[i] = ballCordsX[i] + vxs[i];
+      ballCordsY[i] = ballCordsY[i] + vys[i];
+    }
   }
 
   void draw() {
     background(245);
     createBox();
+    createBall();
+    moveBall();
+    collisionCheck();
   }
 }
