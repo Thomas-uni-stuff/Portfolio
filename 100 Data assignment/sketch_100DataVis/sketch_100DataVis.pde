@@ -1,6 +1,10 @@
 /*  
     Minimum screen size 17inches, 20+ inches recommended
     If minimum requirement is not met, program will not entirely fit on screen
+    
+    Program created by Thomas Rasmussen, student at City, St. George's, 
+    Creative coding course work assignment undergrad year 1
+    Worked on between October - December 2026
 */
 
 Bar bar;

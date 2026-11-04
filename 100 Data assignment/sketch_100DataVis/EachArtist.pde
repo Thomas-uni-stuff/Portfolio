@@ -6,11 +6,11 @@
 
 class EachArtist {
   String artists[];
-  ArrayList<String> uniqueArtists = new ArrayList<String>();
-  ArrayList<Integer> topArtistStreams = new ArrayList<Integer>();
-  ArrayList<String> artistNames = new ArrayList<String>();
-  ArrayList<Integer> eachArtistStreams = new ArrayList<Integer>();
-  ArrayList<Integer> artistApps = new ArrayList<Integer>();
+  ArrayList<String> uniqueArtists = new ArrayList<String>();    //Stores the name of each unique artist that has been listened to during October
+  ArrayList<Integer> totalArtistStreams = new ArrayList<Integer>();    //ArrayList used to store all 155 streaming values
+  ArrayList<String> artistNames = new ArrayList<String>();    //Stores all 155 artist names
+  ArrayList<Integer> eachArtistStreams = new ArrayList<Integer>();    //Stores the total number of streams for each artist
+  ArrayList<Float> artistApps = new ArrayList<Float>();    //Stores the total number of appearances by each artist during October
   float ballCordsX[];
   float ballCordsY[];
   float vxs[];
@@ -24,7 +24,7 @@ class EachArtist {
 
   EachArtist() {
     counter = 0;
-    radius = 2;
+    radius = 0;
     artists = loadStrings("TopArtistNames.txt");
     artistStreams = loadStrings("TopArtistStreams.txt");
     times = createFont("times.ttf", 14);
@@ -32,7 +32,7 @@ class EachArtist {
       String tempArray[] = split(artists[i], '/');
       int tempArrayNum[] = int(split(artistStreams[i], '/'));
       for (int u=0; u<tempArray.length; u++) {
-        topArtistStreams.add(tempArrayNum[u]);
+        totalArtistStreams.add(tempArrayNum[u]);
         artistNames.add(tempArray[u]);
         if (uniqueArtists.contains(tempArray[u])) {
         } else {
@@ -45,22 +45,22 @@ class EachArtist {
     ballCordsX = new float[uniqueArtists.size()];
     ballCordsY = new float[uniqueArtists.size()];
     for (int n=0; n<uniqueArtists.size(); n++) {
-      int appearanceCounter = 0;
+      float appearanceCounter = 0;
       int streamsCounter = 0;    //Re-initialises streamsCounter to 0 every time n is incremented
       ballCordsX[n] = random(400, 1100);
       ballCordsY[n] = random(550, 650);
       for (int a=0; a<artistNames.size(); a++) {
         if (uniqueArtists.get(n).equals(artistNames.get(a))) {    //compares uniqueArtists pos n with artistNames pos a
-          streamsCounter = streamsCounter + topArtistStreams.get(a);  //if uniqueArtists(n) and artistNames(a) are equal, streamsCounter is incremented by the value in topArtistStreams(a)
+          streamsCounter = streamsCounter + totalArtistStreams.get(a);  //if uniqueArtists(n) and artistNames(a) are equal, streamsCounter is incremented by the value in topArtistStreams(a)
           appearanceCounter = appearanceCounter + 1;
         }
       }
       eachArtistStreams.add(streamsCounter);    //streamsCounter is added to the eachArtistStreams arrayList, so that it creates a parallel arrayList to uniqueArtists
       artistApps.add(appearanceCounter);
     }
-    for (int b=0; b<uniqueArtists.size(); b++) {
-      vxs[b] = artistApps.get(b);
-      vys[b] = artistApps.get(b);
+    for (int b=0; b<uniqueArtists.size(); b++) {  //Initialises each velocity for each artist dependant on number of apperances 
+      vxs[b] = artistApps.get(b)/2;
+      vys[b] = artistApps.get(b)/2;
     }
     colourFlags = new boolean[uniqueArtists.size()];    //initialises colourFlags with all false values
   }
@@ -112,32 +112,33 @@ class EachArtist {
     text("Counter : " + counter, xPos+75, yPos+20);
   }
 
-  void createBall() {
+  void createBall() {    //Method creates a ball representing each artist, size is determined by number of streams
     float ballColour = 0;
     for (int i=0; i<uniqueArtists.size(); i++) {
-      ballColour = (i * 137.5) % 360;
+      ballColour = (i * 137.5) % 360;    //Assigns the same colour that is used in the bar graph to represent each artist, to the ball that represents the same artist
       if (colourFlags[i] == true) {
-        radius = radius * eachArtistStreams.get(i);
+        radius =  sqrt(eachArtistStreams.get(i)) * 8;  //takes the square root of the streams and multiplies by 8, this is so that there isn't a massive gap between the smallest and largest values
         fill(ballColour, 100, 100);
         circle(ballCordsX[i], ballCordsY[i], radius);
       }
-      radius = 2;
+      radius = 0;
       ballColour = 0;
     }
   }
 
-  void collisionCheck() {
+  void collisionCheck() {    //Method checks collision of balls against walls and boxes
     for (int i=0; i<uniqueArtists.size(); i++) {
-      if (ballCordsX[i] + (radius * eachArtistStreams.get(i))/2 > width || ballCordsX[i] - (radius * eachArtistStreams.get(i))/2 < 0) {
+      radius = sqrt(eachArtistStreams.get(i)) * 8;
+      if (ballCordsX[i] + radius/2 > width || ballCordsX[i] - radius/2 < 0) {
         vxs[i] = -vxs[i];
       }
-      if (ballCordsY[i] + (radius * eachArtistStreams.get(i))/2 > height || ballCordsY[i] - (radius * eachArtistStreams.get(i))/2 < 160) {
+      if (ballCordsY[i] + radius/2 > height || ballCordsY[i] - radius/2 < 160) {
         vys[i] = -vys[i];
       }
     }
   }
 
-  void moveBall() {
+  void moveBall() {    //Method makes each ball move at a velocity dependant on the number of days in October they have been listened to
     for (int i=0; i<uniqueArtists.size(); i++) {
       ballCordsX[i] = ballCordsX[i] + vxs[i];
       ballCordsY[i] = ballCordsY[i] + vys[i];

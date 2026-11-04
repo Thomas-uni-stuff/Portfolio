@@ -1,7 +1,6 @@
 //This class simply displays a user manual with all the necessary info of the program
 
 class UserManual {
-
   PFont gothic;
   PFont times;
   UserManual() {
