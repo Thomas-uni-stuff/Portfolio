@@ -26,7 +26,7 @@ class Bar {
 
   Bar() {
     colorMode(HSB, 360, 100, 100);    //setting the colour mode to HSB to make it easier to customise the colour of each artist bar
-    times = createFont("times.ttf", 12);
+    times = createFont("times.ttf", 14);
     posX = 10;
     lineX = 45;
     date = 1;
