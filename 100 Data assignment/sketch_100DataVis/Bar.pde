@@ -22,9 +22,9 @@ class Bar {
   ArrayList<String> artistNames = new ArrayList<String>();    //Creates arrayList that stores the name of every single artist for each day
   float artistColour;
   boolean drawBox;
+  EachArtist sharedRef;
 
-
-  Bar() {
+  Bar(String[] names, String[] streams, String[] total, String[] ids) {
     colorMode(HSB, 360, 100, 100);    //setting the colour mode to HSB to make it easier to customise the colour of each artist bar
     times = createFont("times.ttf", 14);
     posX = 10;
@@ -33,18 +33,13 @@ class Bar {
     artistLen = 0;
     rectPosX = 10;
     counter = 0;
-    artists = loadStrings("TopArtistNames.txt");
-    aStreams = loadStrings("TopArtistStreams.txt");
-    tStreams = loadStrings("TotalStreams.txt");
-    artistIDs = loadStrings("ArtistID.txt");
-    for (int i=0; i<artistIDs.length; i++) {
-      int tempIDs[] = int(split(artistIDs[i], '/'));
-      for (int u=0; u<tempIDs.length; u++) {
-        if (uniqueArtists.contains(tempIDs[u])) {    //if the uniqueArtists arrayList already contains the artistID in tempIDs[u], nothing happens and it checks the next element in tempIDs
-        } else {
-          uniqueArtists.add(tempIDs[u]);      //if it doesn't contain the artistID, then it is added to the uniqueArtists
-        }
-      }
+    artists = names;
+    aStreams = streams;
+    tStreams = total;
+    artistIDs = ids;
+    ArrayList<String> sourcedList = sharedRef.getUniqueArtists();    //gets the uniqueArtist data from eachArtist, meaning code for initialising uniqueArtist does not have to be repeated
+    for (int i=0; i<sourcedList.size(); i++){
+      uniqueArtists.add(int(sourcedList.get(i)));
     }
     for (int u=0; u<artists.length; u++) {
       String tempNames[] = split(artists[u], '/');

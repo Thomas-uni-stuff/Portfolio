@@ -22,11 +22,11 @@ class EachArtist {
   boolean colourFlags[];
   float radius;
 
-  EachArtist() {
+  EachArtist(String[] names, String[] streams) {
     counter = 0;
     radius = 0;
-    artists = loadStrings("TopArtistNames.txt");
-    artistStreams = loadStrings("TopArtistStreams.txt");
+    artists = names;
+    artistStreams = streams;
     times = createFont("times.ttf", 14);
     for (int i=0; i<artists.length; i++) {
       String tempArray[] = split(artists[i], '/');
@@ -34,9 +34,9 @@ class EachArtist {
       for (int u=0; u<tempArray.length; u++) {
         totalArtistStreams.add(tempArrayNum[u]);
         artistNames.add(tempArray[u]);
-        if (uniqueArtists.contains(tempArray[u])) {
+        if (uniqueArtists.contains(tempArray[u])) {  //if the uniqueArtists arrayList already contains the artistID in tempIDs[u], nothing happens and it checks the next element in tempIDs
         } else {
-          uniqueArtists.add(tempArray[u]);
+          uniqueArtists.add(tempArray[u]);  //if it doesn't contain the artistID, then it is added to the uniqueArtists
         }
       }
     }
@@ -64,8 +64,10 @@ class EachArtist {
     }
     colourFlags = new boolean[uniqueArtists.size()];    //initialises colourFlags with all false values
   }
-
-
+  
+  ArrayList<String> getUniqueArtists() {    //This method allows populated uniqueArtist to be shared across multiple classes, so it does not need to be initialised within each individual class
+    return uniqueArtists;
+  }
 
   void handleClick() {    //Method checks where mouse is and is connected to mouseClicked method in main class, so that it runs every time mouse is pressed
     float xPos = 0;
