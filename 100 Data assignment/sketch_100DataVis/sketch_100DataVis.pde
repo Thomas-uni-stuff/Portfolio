@@ -10,6 +10,7 @@
 Bar bar;
 UserManual userManual;
 EachArtist eachArtist;
+MusicNote musicNote;
 boolean manualDisplayed;
 int textColour;
 int textAddition;    //determines whether textColour gets added or subtracted
@@ -17,12 +18,14 @@ String rawArtists[];
 String rawStreams[];
 String rawTotalStreams[];
 String rawIDs[];
+int posChecker;  //posChecker checks which class the user is currently viewing, this is so if they decide to pull up the user manual, when they leave it, they will not be booted back to the start screen
 
 void setup() {
   size(1500, 1000);
   manualDisplayed = false;
   textColour = 5;
   textAddition = 2;
+  posChecker = 0;
   rawArtists = loadStrings("TopArtistNames.txt");    //Loads the data from each text file in the constructor of the main class
   rawStreams = loadStrings("TopArtistStreams.txt");  //This is so that it does not have to be loaded in each individual class
   rawTotalStreams = loadStrings("TotalStreams.txt");
@@ -30,27 +33,66 @@ void setup() {
   bar = new Bar(rawArtists, rawStreams, rawTotalStreams, rawIDs);
   eachArtist = new EachArtist(rawArtists, rawStreams);
   userManual = new UserManual();
+  musicNote = new MusicNote(eachArtist);  //Passing eachArtist as parameter so MusicNote has a direct reference to the existing EachArtist object that is in memory
 }
+
+enum ScreenMode {  //enum value used to determine which class the user is currently viewing, and makes it so that the user can only leave each class by pressing ENTER
+  BAR,
+    EACH_ARTIST,
+    MUSIC_NOTE,
+    USER_MANUAL
+}
+
+ScreenMode currentMode = ScreenMode.BAR;
 
 void mouseClicked() {
   eachArtist.handleClick();    //Connects the main program with eachArtist, so that the mouse click can be registered inside the eachArtist class
 }
 
 void keyPressed() {
+  if (key == '1') {
+    currentMode = ScreenMode.EACH_ARTIST;
+    posChecker = 1;
+  }
+  if (key == '2') {
+    currentMode = ScreenMode.MUSIC_NOTE;
+    posChecker = 2;
+    eachArtist.resetTable();  //Resets the table that activates the particles in EachArtist when user leaves the screen so that it does not continue running in the background
+  }
   if (key == 'u' || key == 'U') {
-    userManual.draw();
+    currentMode = ScreenMode.USER_MANUAL;
     manualDisplayed = true;
   }
-  textAlign(LEFT);    //realligns all text to the left, so text is displayed properly when bar class is called
-  if (key == '1') {
-    eachArtist.draw();
+  if (key == ENTER || key == RETURN) {
+    if (currentMode == ScreenMode.USER_MANUAL) {
+      if (posChecker == 0) {
+        currentMode = ScreenMode.BAR;
+      } else if (posChecker == 1) {
+        currentMode = ScreenMode.EACH_ARTIST;
+      } else if (posChecker == 2) {
+        currentMode = ScreenMode.MUSIC_NOTE;
+      }
+    } else {
+      currentMode = ScreenMode.BAR;
+      eachArtist.resetTable();
+    }
   }
+  musicNote.handleKeyPressed();
 }
 
-
 void draw() {
-  bar.draw();
-  keyPressed();
+  if (currentMode == ScreenMode.BAR) {
+    bar.draw();
+  }
+  if (currentMode == ScreenMode.EACH_ARTIST) {
+    eachArtist.draw();
+  }
+  if (currentMode == ScreenMode.MUSIC_NOTE) {
+    musicNote.draw();
+  }
+  if (currentMode == ScreenMode.USER_MANUAL) {
+    userManual.draw();
+  }
   if (manualDisplayed == false) {    //checks whether user manual has been opened before or not, if it hasn't text is diplayed informing user of how to access user manual
     textAlign(CENTER);
     textSize(120);

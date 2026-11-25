@@ -2,7 +2,7 @@
  This class acts as the start-up screen for the program
  It displays a very simple, statistical view of the data (a bit similar to an excel diagram)
  The main purpose for this class is simply to have a neat start page, where the data is displayed in a simple, easily digestible form
-*/
+ */
 
 class Bar {
   PFont times;
@@ -18,8 +18,9 @@ class Bar {
   int counter;
   int listPos;
   int lineX;
-  ArrayList<Integer> uniqueArtists = new ArrayList<Integer>();    //Creates arrayList that stores each unique artistID
+  ArrayList<Integer> uniqueIDs= new ArrayList<Integer>();    //Creates arrayList that stores each unique artistID
   ArrayList<String> artistNames = new ArrayList<String>();    //Creates arrayList that stores the name of every single artist for each day
+  ArrayList<String> sourcedList = new ArrayList<String>();
   float artistColour;
   boolean drawBox;
   EachArtist sharedRef;
@@ -37,9 +38,15 @@ class Bar {
     aStreams = streams;
     tStreams = total;
     artistIDs = ids;
-    ArrayList<String> sourcedList = sharedRef.getUniqueArtists();    //gets the uniqueArtist data from eachArtist, meaning code for initialising uniqueArtist does not have to be repeated
-    for (int i=0; i<sourcedList.size(); i++){
-      uniqueArtists.add(int(sourcedList.get(i)));
+    for (int i=0; i<artists.length; i++){
+      int tempIDs[] = int(split(artistIDs[i], '/'));
+      for (int n=0; n<tempIDs.length; n++){
+        if(uniqueIDs.contains(tempIDs[n])){
+        }
+        else{
+          uniqueIDs.add(tempIDs[n]);
+        }
+      }
     }
     for (int u=0; u<artists.length; u++) {
       String tempNames[] = split(artists[u], '/');
@@ -49,7 +56,7 @@ class Bar {
     }
   }
 
-  void barColour(float floatVal) {    //Method fills in each artist block with a colour depending on their position in the uniqueArtist arrayList
+  void barColour(float floatVal) {    //Method fills in each artist block with a colour depending on their position in the uniqueIDs arrayList
     floatVal = (floatVal * 137.5)%360;
     fill(floatVal, 100, 100);
   }
@@ -103,8 +110,8 @@ class Bar {
       int tempArrayNum[] = int(split(aStreams[i], '/'));
       for (int u=0; u<tempArrayNum.length; u++) {    //Overlays the artists bar on top of the bar for total streams, visualising the amount each artist was streamed
         int tempIDs[] = int(split(artistIDs[i], '/'));
-        if (uniqueArtists.contains(tempIDs[u])) {
-          artistColour = uniqueArtists.indexOf(tempIDs[u]);
+        if (uniqueIDs.contains(tempIDs[u])) {
+          artistColour = uniqueIDs.indexOf(tempIDs[u]);
         }
         barColour(artistColour);
         rect(posX, (height - artistLen), 35, tempArrayNum[u]*8);

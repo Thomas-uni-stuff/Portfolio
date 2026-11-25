@@ -68,6 +68,10 @@ class EachArtist {
   ArrayList<String> getUniqueArtists() {    //This method allows populated uniqueArtist to be shared across multiple classes, so it does not need to be initialised within each individual class
     return uniqueArtists;
   }
+  
+  ArrayList<Integer> getEachArtistStreams() {    //Allows populated eachArtistStreams ArrayList to be shared across multiple classes
+    return eachArtistStreams;
+  }
 
   void handleClick() {    //Method checks where mouse is and is connected to mouseClicked method in main class, so that it runs every time mouse is pressed
     float xPos = 0;
@@ -144,6 +148,12 @@ class EachArtist {
     for (int i=0; i<uniqueArtists.size(); i++) {
       ballCordsX[i] = ballCordsX[i] + vxs[i];
       ballCordsY[i] = ballCordsY[i] + vys[i];
+    }
+  }
+  
+  void resetTable(){
+    for(int i=0; i<colourFlags.length; i++){
+      colourFlags[i] = false;
     }
   }
 
