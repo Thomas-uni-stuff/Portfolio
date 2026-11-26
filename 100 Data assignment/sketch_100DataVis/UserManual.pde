@@ -30,8 +30,18 @@ class UserManual {
     textSize(20);
     text("- There is a visualisation of how many streams each artist has racked up during October", 750, 515);
     text("- I've also visualised how many seperate times the artist appears during October", 750, 540);
+    text("- You can also clear all selected Artists by pressing BACKSPACE", 750, 565);
+    textSize(25);
+    text("If you press 2, you'll open the MusicNote part of the program", 750, 615);
+    textSize(20);
+    text("- Here I am displaying my streams for each artist with a colour coded music note, which moves across the screen continously", 750, 640);
+    text("- I display 3 'Levels' at once, and you can toggle between each level with the UP arrow and DOWN arrow keys", 750, 665);
+    text("- You can also press 'o' to open a display window, which shows the artists currently displayed in descending order", 750, 685);
+    textSize(25);
+    text("I had an absolute blast creating this program, it took some time and a lot of work, but I am very proud of it", 750, 725);
+    text("I hope you enjoy my visualisations (and that I get a good grade for it as well haha)", 750, 755);
     textSize(15);
-    text("Press any button (except u or esc) to leave the user manual", 750, 780);
+    text("Press Enter to leave the user manual", 750, 780);
     textFont(times);
     textAlign(LEFT);
   }

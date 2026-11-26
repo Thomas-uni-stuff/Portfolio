@@ -75,9 +75,11 @@ void keyPressed() {
     } else {
       currentMode = ScreenMode.BAR;
       eachArtist.resetTable();
+      posChecker = 0;
     }
   }
   musicNote.handleKeyPressed();
+  eachArtist.handleKeyPressed();
 }
 
 void draw() {

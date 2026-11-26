@@ -91,6 +91,13 @@ class EachArtist {
       xPos = xPos + 150;
     }
   }
+  
+  void handleKeyPressed() {
+    for(int i=0; i<colourFlags.length; i++){
+      colourFlags[i] = false;
+    }
+    counter = 0;
+  }
 
   void createBox() {
     float xPos = 0;
@@ -155,6 +162,7 @@ class EachArtist {
     for(int i=0; i<colourFlags.length; i++){
       colourFlags[i] = false;
     }
+    counter = 0;
   }
 
   void draw() {
