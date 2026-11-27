@@ -36,7 +36,7 @@ class UserManual {
     textSize(20);
     text("- Here I am displaying my streams for each artist with a colour coded music note, which moves across the screen continously", 750, 640);
     text("- I display 3 'Levels' at once, and you can toggle between each level with the UP arrow and DOWN arrow keys", 750, 665);
-    text("- You can also press 'o' to open a display window, which shows the artists currently displayed in descending order", 750, 685);
+    text("- You can also press 'o' to open a display window, which shows the artists currently displayed in descending order, and 'p' for the framerate", 750, 685);
     textSize(25);
     text("I had an absolute blast creating this program, it took some time and a lot of work, but I am very proud of it", 750, 725);
     text("I hope you enjoy my visualisations (and that I get a good grade for it as well haha)", 750, 755);
