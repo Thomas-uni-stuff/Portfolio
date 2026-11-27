@@ -78,77 +78,78 @@ class MusicNote {
   }
 
 
-void displayNotes() {
-  int brightness = 30;    //determines the brightness of the music notes depending on the level they are in (upper levels = more bright, lower levels = less bright)
-  int tempPointer = 0;
-  float noteColour = 0;
-  int counter = 1;
-  float size = 20;
-  int loopChecker = 2;
-  tempPointer = pointer + 2;
-  for (int i=xCords.size()-1; i>=0; i--) {
-    noteColour = (tempPointer * 137.5) % 360;
-    tint(noteColour, 100, brightness);
-    image(note, xCords.get(i), yCords.get(i), size, size);
-    counter = counter + 1;
-    if (counter == eachArtistStreams.get(tempPointer) && loopChecker > 0) {  //Checks whether counter value is equal to the number of streams in the position tempPointer is pointing to
-      brightness = brightness*2;
-      tempPointer = tempPointer - 1;
-      counter = 1;
-      size = size*2;
-      loopChecker = loopChecker - 1;
+  void displayNotes() {
+    int brightness = 30;    //determines the brightness of the music notes depending on the level they are in (upper levels = more bright, lower levels = less bright)
+    int tempPointer = 0;
+    float noteColour = 0;
+    int counter = 1;
+    float size = 20;
+    int loopChecker = 2;
+    tempPointer = pointer + 2;
+    for (int i=xCords.size()-1; i>=0; i--) {
+      noteColour = (tempPointer * 137.5) % 360;
+      tint(noteColour, 100, brightness);
+      image(note, xCords.get(i), yCords.get(i), size, size);
+      if (counter == eachArtistStreams.get(tempPointer) && loopChecker > 0) {  //Checks whether counter value is equal to the number of streams in the position tempPointer is pointing to
+        brightness = brightness*2;
+        tempPointer = tempPointer - 1;
+        counter = 1;
+        size = size*2;
+        loopChecker = loopChecker - 1;
+        counter = 0;
+      }
+      counter = counter + 1;
     }
   }
-}
 
-void displayBox(boolean boolVal1, boolean boolVal2) {
-  if (boolVal1 == true) {
-    fill(360);
-    rect(width-100, 0, 100, 20);
-    fill(0);
-    textSize(15);
-    textAlign(CENTER, CENTER);
-    text("Level: "+pointer, width-50, 10);
-    fill(360);
-    rect(width-100, 20, 100, 100);
-    fill(0);
-    text("ARTISTS", width-50, 30);
-    line(width-90, 40, width-10, 40);
-    textSize(10);
-    text(uniqueArtists.get(pointer), width-50, 50);
-    text(uniqueArtists.get(pointer+1), width-50, 70);
-    text(uniqueArtists.get(pointer+2), width-50, 90);
-  }
-  if (boolVal2 == true) {
-    fill(360);
-    textSize(20);
-    textAlign(LEFT);
-    text(frameRate, 0, 20);
-  }
-}
-
-void moveNotes() {
-  for (int i=0; i<xCords.size(); i++) {
-    xCords.set(i, xCords.get(i) + vxs.get(i));
-    yCords.set(i, yCords.get(i) + vys.get(i));
-    if (xCords.get(i) < -100) {
-      xCords.set(i, xCords.get(i)+ (width + 100));
-      yCords.set(i, -yCords.get(i)+height);
+  void displayBox(boolean boolVal1, boolean boolVal2) {
+    if (boolVal1 == true) {
+      fill(360);
+      rect(width-100, 0, 100, 20);
+      fill(0);
+      textSize(15);
+      textAlign(CENTER, CENTER);
+      text("Level: "+pointer, width-50, 10);
+      fill(360);
+      rect(width-100, 20, 100, 100);
+      fill(0);
+      text("ARTISTS", width-50, 30);
+      line(width-90, 40, width-10, 40);
+      textSize(10);
+      text(uniqueArtists.get(pointer), width-50, 50);
+      text(uniqueArtists.get(pointer+1), width-50, 70);
+      text(uniqueArtists.get(pointer+2), width-50, 90);
+    }
+    if (boolVal2 == true) {
+      fill(360);
+      textSize(20);
+      textAlign(LEFT);
+      text(frameRate, 0, 20);
     }
   }
-}
 
-void clearArrays() {
-  xCords.clear();
-  yCords.clear();
-  pointer = 0;
-}
+  void moveNotes() {
+    for (int i=0; i<xCords.size(); i++) {
+      xCords.set(i, xCords.get(i) + vxs.get(i));
+      yCords.set(i, yCords.get(i) + vys.get(i));
+      if (xCords.get(i) < -100) {
+        xCords.set(i, xCords.get(i)+ (width + 100));
+        yCords.set(i, -yCords.get(i)+height);
+      }
+    }
+  }
 
-void draw() {
-  background(0);
-  populateArrays();
-  displayNotes();
-  moveNotes();
-  displayBox(doDisplay, displayFPS);
+  void clearArrays() {
+    xCords.clear();
+    yCords.clear();
+    pointer = 0;
+  }
+
+  void draw() {
+    background(0);
+    populateArrays();
+    displayNotes();
+    moveNotes();
+    displayBox(doDisplay, displayFPS);
   }
 }
