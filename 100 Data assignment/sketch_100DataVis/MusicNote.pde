@@ -31,6 +31,7 @@ class MusicNote {
     counter = 0;
     fillArray = true;
     doDisplay = false;
+    printArray(eachArtistStreams);
   }
 
   void populateArrays() {    //Populates arrays 'xCords' and 'yCords' with x and y starting positions for each music note that should be displayed, as well as velocity for x and y
@@ -83,22 +84,24 @@ class MusicNote {
   }
 
   void displayNotes() {
-    int brightness = 100;    //determines the brightness of the music notes depending on the level they are in (upper levels = more bright, lower levels = less bright)
+    int brightness = 30;    //determines the brightness of the music notes depending on the level they are in (upper levels = more bright, lower levels = less bright)
     int tempPointer = 0;
     float noteColour = 0;
     int counter = 1;
-    int size = 90;
-    tempPointer = pointer;
-    for (int i=0; i<xCords.size(); i++) {
+    float size = 30;
+    tempPointer = pointer + 2;
+    println(xCords.size());
+    println(eachArtistStreams.get(2));
+    for (int i=xCords.size()-1; i>=0; i--) {
       noteColour = (tempPointer * 137.5) % 360;
       tint(noteColour, 100, brightness);
       image(note, xCords.get(i), yCords.get(i), size, size);
       counter = counter + 1;
       if (counter == eachArtistStreams.get(tempPointer)) {  //Checks whether counter value is equal to the number of streams in the position tempPointer is pointing to
-        brightness = brightness - 30;
-        tempPointer = tempPointer + 1;
+        brightness = brightness*2;
+        tempPointer = tempPointer - 1;
         counter = 1;
-        size = size - 30;
+        size = size*1.5;
       }
     }
   }
